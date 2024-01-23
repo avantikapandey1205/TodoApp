@@ -24,8 +24,8 @@ export default function App() {
 function DrawerScreen() {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="ViewTask" component={HomeScreen} options={{ headerTitle: 'View Task' }} />
-      <Drawer.Screen name="DetailsScreen" component={DetailsScreen} />
+      <Drawer.Screen name="ViewTask" component={HomeScreen} options={{ headerTitle: 'Todos', drawerLabel: "Todos" }} />
+      <Drawer.Screen name="DetailsScreen" component={DetailsScreen} options={{ headerTitle: "Add Notes", drawerLabel: "Add Notes" }}/>
     </Drawer.Navigator>
   );
 }
