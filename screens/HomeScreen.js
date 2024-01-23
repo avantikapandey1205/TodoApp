@@ -100,6 +100,6 @@ const HomeScreen = ({ navigation }) => {
       </KeyboardAvoidingView>
     </View>
   );
-};
+}
 
 export default HomeScreen;
