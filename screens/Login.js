@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/core';
 
 
 export default function Login() {
-  const background = require('../assets/background2.jpeg');
+  const background = require('../assets/WP3.jpg');
   const [usermail, setEmail] = useState('avan@gmail.com');
   const [Password, setPassword] = useState('123456');
 
@@ -63,8 +63,10 @@ export default function Login() {
         />
         <StatusBar style="auto" />
         <Button title="Register" onPress={handleRegister} color="#000000" />
-        
-        <Button title="Login" onPress={handleLogin} color="#000000" />
+         {/* Add space between Register and Login buttons */}
+         <View style={{ marginVertical: 10 }} /> 
+        <Button title="Login" onPress={handleLogin} color="#000000"/>
+
       </View>
     </ImageBackground>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Appstyle from '../Style/Appstyle';
 
@@ -62,25 +62,35 @@ const HomeScreen = ({ navigation }) => {
     setTask(taskToEdit.text);
   };
 
+  const handleLongPressTask = (taskId) => {
+    Alert.alert(
+      'Modify Task',
+      '',
+      [
+        { text: 'Edit', onPress: () => handleEditTask(taskId) },
+        {
+          text: 'Delete',
+          onPress: () => handleDeleteTask(taskId),
+          style: 'destructive',
+        },
+        { text: 'Cancel', style: 'cancel' },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
     <View style={Appstyle.container}>
       <ScrollView style={Appstyle.taskList}>
         {tasks.map((item) => (
-          <View key={item.id} style={Appstyle.square}>
-            <Text>{item.text}</Text>
-            <View style={Appstyle.taskButtons}>
-              <TouchableOpacity onPress={() => handleEditTask(item.id)}>
-                <View style={Appstyle.editButton}>
-                  <Text style={Appstyle.buttonText}>Edit</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
-                <View style={Appstyle.deleteButton}>
-                  <Text style={Appstyle.buttonText}>Delete</Text>
-                </View>
-              </TouchableOpacity>
+          <TouchableOpacity
+            key={item.id}
+            onLongPress={() => handleLongPressTask(item.id)}
+          >
+            <View style={Appstyle.square}>
+              <Text>{item.text}</Text>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
 

@@ -22,7 +22,8 @@ export default StyleSheet.create({
          
      },
       header:{
-        fontSize:50
+        fontSize:50,
+        fontWeight: 'bold',
       },
       header1:{
         fontSize:25
@@ -109,15 +110,34 @@ export default StyleSheet.create({
     marginTop: 16,
   },
   notesInput: {
-    width: '100%',
-    height: 100,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'absolute',
+    bottom: 60,
+    width: '80%',
+    paddingHorizontal: 20,
+    borderWidth: 1,
+    borderRadius: 62,
+    marginLeft: 16,
+    marginRight:25,
+  },
+  NoteButton:{
+    fontSize: 24,
+    color: '#000000',
+  },
+  rect: {
+    backgroundColor: '#808080', // Background color for the note box
+    padding: 10,
+    marginVertical: 15,
+    borderRadius: 15, // Adjusted borderRadius for round corners
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
-    marginTop: 8,
-    padding: 8,
-  },
-
+    width: 350, // Adjusted width for a square box
+    flexDirection: 'row', // Added flexDirection to position buttons horizontally
+    justifyContent: 'space-between', // Added justifyContent to push buttons to the right
+    alignItems: 'center',
+  }
+  
 
 
 });
