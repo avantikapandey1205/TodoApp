@@ -62,6 +62,7 @@ export default StyleSheet.create({
       borderRadius: 60,
       borderColor: '#C0C0C0',
       borderWidth: 1,
+      minHeight: 60
   },
   addWrapper: {
     width: 60,

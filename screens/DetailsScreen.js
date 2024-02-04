@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import {View,Text,TextInput,TouchableOpacity,KeyboardAvoidingView,Platform,ScrollView,Alert,} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Appstyle from '../Style/Appstyle';
 
@@ -24,7 +15,7 @@ const DetailsScreen = ({ navigation }) => {
 
   const saveTasks = async (updatedTasks) => {
     try {
-      await AsyncStorage.setItem('tasks', JSON.stringify(updatedTasks));
+      await AsyncStorage.setItem('notes', JSON.stringify(updatedTasks));
     } catch (error) {
       console.error('Error saving tasks to AsyncStorage:', error);
     }
@@ -32,7 +23,7 @@ const DetailsScreen = ({ navigation }) => {
 
   const loadTasks = async () => {
     try {
-      const storedTasks = await AsyncStorage.getItem('tasks');
+      const storedTasks = await AsyncStorage.getItem('notes');
       if (storedTasks) {
         setTasks(JSON.parse(storedTasks));
       }
