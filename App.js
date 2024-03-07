@@ -48,16 +48,18 @@ function SignOutButton({ navigation }) {
 function DrawerScreen({ navigation }) {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="ViewTask" component={HomeScreen} options={{ headerTitle: 'Todos', drawerLabel: 'Todos' }} />
-      <Drawer.Screen name="DetailsScreen" component={DetailsScreen} options={{ headerTitle: 'Add Notes', drawerLabel: 'Add Notes' }} />
+      <Drawer.Screen name="ViewTask" component={HomeScreen} options={{ headerTitle: 'Todos', drawerLabel: 'Todos', drawerActiveBackgroundColor:'#000000'}} />
+      <Drawer.Screen name="DetailsScreen" component={DetailsScreen} options={{ headerTitle: 'Add Notes', drawerLabel: 'Add Notes' ,drawerActiveBackgroundColor:'#000000' }} />
+       {/*<Drawer.Screen name="Darkmode" component={Darkmode} options={{ headerTitle: Darkmode, drawerLabel: 'Darkmode' ,drawerActiveBackgroundColor:'#000000' }} />  */}
       <Drawer.Screen
         name="SignOut"
         options={{
           headerTitle: 'Sign Out',
           drawerLabel: 'Sign Out',
-        }}
-      >
+          drawerActiveBackgroundColor:'#000000' }}>
+
         {() => <SignOutButton navigation={navigation} />}
+
       </Drawer.Screen>
     </Drawer.Navigator>
   );

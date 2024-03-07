@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Appstyle from '../Style/Appstyle';
+import { DPicker } from '../components/DateTimePicker';
 
 const HomeScreen = ({ navigation }) => {
   const [task, setTask] = useState('');
@@ -82,6 +83,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={Appstyle.container}>
       <ScrollView style={Appstyle.taskList}>
+        <DPicker/>
         {tasks.map((item) => (
           <TouchableOpacity
             key={item.id}
