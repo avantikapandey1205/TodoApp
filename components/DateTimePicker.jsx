@@ -3,9 +3,13 @@ import { View, Text, SafeAreaView, Button } from 'react-native'
 import React from 'react'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+// no operation
+const noop = () => undefined;
 
-export const DPicker = () => {
-    const [date, setDate] = useState(new Date(1598051730000));
+export const DPicker = (props) => {
+    const {onDateSet = noop } = props;
+
+    const [date, setDate] = useState(new Date(0));
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
   
@@ -13,6 +17,7 @@ export const DPicker = () => {
       const currentDate = selectedDate;
       setShow(false);
       setDate(currentDate);
+      onDateSet(currentDate);
     };
   
     const showMode = (currentMode) => {
@@ -32,7 +37,6 @@ export const DPicker = () => {
       <SafeAreaView>
         <Button onPress={showDatepicker} title="Show date picker!" />
         <Button onPress={showTimepicker} title="Show time picker!" />
-        <Text>selected: {date.toLocaleString()}</Text>
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
