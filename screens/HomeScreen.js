@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert, Pressable } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert, Pressable, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Appstyle from '../Style/Appstyle';
 import uuid from 'react-native-uuid';
 import TaskList from '../components/TaskList';
+import NotificationComp from '../utils/Notifications';
 
 const HomeScreen = ({ navigation }) => {
   const [task, setTask] = useState('');
   const [tasks, setTasks] = useState([]);
   const [editingTaskId, setEditingTaskId] = useState(null);
 
-  
+
   useEffect(() => {
     // Load tasks from AsyncStorage on component mount
     loadTasks();
@@ -89,6 +90,7 @@ const HomeScreen = ({ navigation }) => {
           tasks={tasks}
           handleLongPressTask={handleLongPressTask}
         />
+        <NotificationComp />
       </ScrollView>
 
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={Appstyle.writeTaskWrapper}>
