@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Appstyle from '../Style/Appstyle';
-import { DPicker } from '../components/DateTimePicker';
+import uuid from 'react-native-uuid';
+import TaskList from '../components/TaskList';
 
 const HomeScreen = ({ navigation }) => {
   const [task, setTask] = useState('');
   const [tasks, setTasks] = useState([]);
   const [editingTaskId, setEditingTaskId] = useState(null);
 
+  
   useEffect(() => {
     // Load tasks from AsyncStorage on component mount
     loadTasks();
@@ -43,7 +45,7 @@ const HomeScreen = ({ navigation }) => {
         setEditingTaskId(null);
         saveTasks(updatedTasks); // Save updated tasks to AsyncStorage
       } else {
-        const newTask = { id: tasks.length.toString(), text: task };
+        const newTask = { id: uuid.v4(), text: task };
         setTasks([...tasks, newTask]);
         saveTasks([...tasks, newTask]); // Save updated tasks to AsyncStorage
       }
@@ -83,17 +85,10 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={Appstyle.container}>
       <ScrollView style={Appstyle.taskList}>
-        <DPicker/>
-        {tasks.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            onLongPress={() => handleLongPressTask(item.id)}
-          >
-            <View style={Appstyle.square}>
-              <Text>{item.text}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        <TaskList
+          tasks={tasks}
+          handleLongPressTask={handleLongPressTask}
+        />
       </ScrollView>
 
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={Appstyle.writeTaskWrapper}>
