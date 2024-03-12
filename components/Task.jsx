@@ -15,7 +15,7 @@ const PICKER_MODE = {
 
 const InitialDate = new Date();
 
-const TaskList = ({ tasks, handleLongPressTask = noop }) => {
+const Task = ({ item, handleLongPressTask = noop }) => {
   const [date, setDate] = useState(InitialDate);
   const [isReminderSet, setIsReminderSet] = useState(false);
   const currentItem = useRef(null);
@@ -79,7 +79,7 @@ const TaskList = ({ tasks, handleLongPressTask = noop }) => {
     try {
       console.log({ seconds })
       // Schedule the notification
-     const res =  await Notifications.scheduleNotificationAsync({
+      const res = await Notifications.scheduleNotificationAsync({
         content: {
           title: 'Task Reminder!',
           body: item.text,
@@ -89,7 +89,7 @@ const TaskList = ({ tasks, handleLongPressTask = noop }) => {
         },
       });
 
-      console.log({res})
+      console.log({ res })
       onSuccess();
     } catch (error) {
       console.log(error)
@@ -99,9 +99,8 @@ const TaskList = ({ tasks, handleLongPressTask = noop }) => {
   }
 
 
-  return tasks.map((item) => (
+  return (
     <TouchableOpacity
-      key={item.id}
       onLongPress={() => handleLongPressTask(item.id)}
     >
       <View style={Appstyle.square}>
@@ -113,24 +112,10 @@ const TaskList = ({ tasks, handleLongPressTask = noop }) => {
         >
           <Text>{isReminderSet ? "Set" : "Reminder"}</Text>
         </Pressable>
-        {
-          /** 
-          show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              onChange={onChange}
-              minimumDate={InitialDate}
-              timeZoneName={'Asia/Calcutta'}
-            />
-          )
-          */
-        }
       </View>
     </TouchableOpacity>
-  ));
+  );
 }
 
-export default TaskList
+export default Task
 

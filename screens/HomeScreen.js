@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Appstyle from '../Style/Appstyle';
 import uuid from 'react-native-uuid';
-import TaskList from '../components/TaskList';
+import Task from '../components/Task';
 import NotificationComp from '../utils/Notifications';
 
 const HomeScreen = ({ navigation }) => {
@@ -86,10 +86,15 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={Appstyle.container}>
       <ScrollView style={Appstyle.taskList}>
-        <TaskList
-          tasks={tasks}
-          handleLongPressTask={handleLongPressTask}
-        />
+        {
+          tasks.map(item => (
+            <Task
+              key={item.id}
+              item={item}
+              handleLongPressTask={handleLongPressTask}
+            />
+          ))
+        }
         <NotificationComp />
       </ScrollView>
 
