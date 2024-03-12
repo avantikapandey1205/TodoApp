@@ -1,9 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, Pressable } from 'react-native'
 import React, { useRef, useState } from 'react'
-import { noop } from '../utils';
-import Appstyle from '../Style/Appstyle';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { StyleSheet, Text, View, TouchableOpacity, Pressable } from 'react-native'
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import * as Notifications from 'expo-notifications';
+
+import Appstyle from '../Style/Appstyle';
+import { calculateSecondsUntilTrigger, noop } from '../utils';
 
 const styles = StyleSheet.create({})
 
@@ -15,55 +16,55 @@ const PICKER_MODE = {
 const InitialDate = new Date();
 
 const TaskList = ({ tasks, handleLongPressTask = noop }) => {
-  const [date, setDate] = useState(new Date(0));
-  const [mode, setMode] = useState(PICKER_MODE.date);
+  const [date, setDate] = useState(InitialDate);
   const [isReminderSet, setIsReminderSet] = useState(false);
   const currentItem = useRef(null);
 
-  const [show, setShow] = useState(false);
-
-  const onChange = (event, selectedDate) => {
-    console.log(event.type)
-    if (event.type !== 'set') {
-      setShow(false);
-      return;
-    };
-
-    setDate(selectedDate);
-    console.log({ selectedDate })
-
-
-    if (mode === PICKER_MODE.date) {
-      setShow(false);
-      setTimeout(() => {
-        showMode(PICKER_MODE.time)
-      }, 500)
-
-      return;
+  const onDateSet = (date) => {
+    try {
+      console.log({ iSODate, date })
+      setDate(date?.nativeEvent?.timestamp);
+    } catch (error) {
+      console.log({ customErr: error })
     }
+    setTimeout(showTimepicker, 500);
+  }
 
-    if (mode === PICKER_MODE.time) {
-      setTimeout(() => {
-        // schedule notification
-        scheduleNotification(selectedDate, currentItem.current, () => {
-          setIsReminderSet(true);
-          console.log('reminder set successfully')
-        }, () => {
-          setIsReminderSet(false);
-          console.log('reminder scheduling failed')
-        });
-      }, 500)
-    }
-    setShow(false)
-  };
+  const onTimeSet = (date) => {
+    setDate(date?.nativeEvent?.timestamp);
+    setTimeout(() => {
+      // schedule notification
+      const seconds = calculateSecondsUntilTrigger(date?.nativeEvent?.timestamp)
+      scheduleNotification(seconds, currentItem.current, () => {
+        setIsReminderSet(true);
+        console.log('reminder set successfully')
+      }, () => {
+        setIsReminderSet(false);
+        console.log('reminder scheduling failed')
+      });
+    }, 500)
+  }
+
+
 
   const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
+    let onChange = currentMode === PICKER_MODE.date ? onDateSet : onTimeSet
+
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange,
+      mode: currentMode,
+      minimumDate: InitialDate,
+      timezone: 'Asia/Calcutta',
+    });
   };
 
   const showDatepicker = () => {
     showMode(PICKER_MODE.date);
+  };
+
+  const showTimepicker = () => {
+    showMode(PICKER_MODE.time);
   };
 
 
@@ -74,20 +75,21 @@ const TaskList = ({ tasks, handleLongPressTask = noop }) => {
     console.log('called')
   };
 
-  const scheduleNotification = async (triggerDate, item, onSuccess = noop, onError = noop) => {
+  const scheduleNotification = async (seconds, item, onSuccess = noop, onError = noop) => {
     try {
-      // Set the date and time for the notification
-      // const triggerDate = new Date(triggerDate); // Example: March 10, 2024 at 8:00 AM
-      console.log({triggerDate})
-
+      console.log({ seconds })
       // Schedule the notification
-      await Notifications.scheduleNotificationAsync({
+     const res =  await Notifications.scheduleNotificationAsync({
         content: {
           title: 'Task Reminder!',
           body: item.text,
         },
-        trigger: triggerDate,
+        trigger: {
+          seconds
+        },
       });
+
+      console.log({res})
       onSuccess();
     } catch (error) {
       console.log(error)
@@ -107,19 +109,24 @@ const TaskList = ({ tasks, handleLongPressTask = noop }) => {
         <Pressable
           onPress={() => onSingleTaskReminderClick(item)}
           disabled={isReminderSet}
+          hitSlop={10}
         >
           <Text>{isReminderSet ? "Set" : "Reminder"}</Text>
         </Pressable>
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode={mode}
-            onChange={onChange}
-            minimumDate={InitialDate}
-            timeZoneName={'Asia/Calcutta'}
-          />
-        )}
+        {
+          /** 
+          show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              onChange={onChange}
+              minimumDate={InitialDate}
+              timeZoneName={'Asia/Calcutta'}
+            />
+          )
+          */
+        }
       </View>
     </TouchableOpacity>
   ));
