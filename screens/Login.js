@@ -9,8 +9,8 @@ import { useNavigation } from '@react-navigation/core';
 
 export default function Login() {
   const background = require('../assets/WP3.jpg');
-  const [usermail, setEmail] = useState('avan@gmail.com');
-  const [Password, setPassword] = useState('123456');
+  const [usermail, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
 
   const navigation = useNavigation()
 

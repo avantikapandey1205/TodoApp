@@ -98,7 +98,7 @@ const DetailsScreen = ({ navigation }) => {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={Appstyle.writeTaskWrapper}>
         <TextInput
           style={Appstyle.input}
-          placeholder={'Write a task'}
+          placeholder={'Write a note'}
           onChangeText={(text) => setTask(text)}
           value={task}
           ellipsizeMode="tail"

@@ -102,7 +102,7 @@ const HomeScreen = ({ navigation }) => {
         <TextInput
           multiline
           style={Appstyle.input}
-          placeholder={'Write a task'}
+          placeholder={'Write a todo'}
           onChangeText={(text) => setTask(text)}
           value={task}
         />
