@@ -20,18 +20,25 @@ const Task = ({ item, handleLongPressTask = noop }) => {
   const [isReminderSet, setIsReminderSet] = useState(false);
   const currentItem = useRef(null);
 
-  const onDateSet = (date) => {
+  const onDateSet = (event) => {
+    if (event.type !== 'set') {
+      return;
+    };
+
     try {
-      console.log({ iSODate, date })
-      setDate(date?.nativeEvent?.timestamp);
+      setDate(event?.nativeEvent?.timestamp);
     } catch (error) {
       console.log({ customErr: error })
     }
     setTimeout(showTimepicker, 500);
   }
 
-  const onTimeSet = (date) => {
-    setDate(date?.nativeEvent?.timestamp);
+  const onTimeSet = (event) => {
+    if (event.type !== 'set') {
+      return;
+    };
+
+    setDate(event?.nativeEvent?.timestamp);
     setTimeout(() => {
       // schedule notification
       const seconds = calculateSecondsUntilTrigger(date?.nativeEvent?.timestamp)
