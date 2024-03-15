@@ -21,7 +21,8 @@ const Task = ({ item, handleLongPressTask = noop }) => {
   const currentItem = useRef(null);
 
   const onDateSet = (event) => {
-    if (event.type !== 'set') {
+    console.log({dateEvent:event})
+    if (event?.type !== 'set') {
       return;
     };
 
@@ -34,14 +35,16 @@ const Task = ({ item, handleLongPressTask = noop }) => {
   }
 
   const onTimeSet = (event) => {
-    if (event.type !== 'set') {
+    console.log({timeEvenT:event})
+    if (event?.type !== 'set') {
       return;
     };
 
     setDate(event?.nativeEvent?.timestamp);
     setTimeout(() => {
       // schedule notification
-      const seconds = calculateSecondsUntilTrigger(date?.nativeEvent?.timestamp)
+      const seconds = calculateSecondsUntilTrigger(event?.nativeEvent?.timestamp)
+      console.log({seconds})
       scheduleNotification(seconds, currentItem.current, () => {
         setIsReminderSet(true);
         console.log('reminder set successfully')
